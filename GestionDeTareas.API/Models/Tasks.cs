@@ -25,7 +25,7 @@ namespace GestionDeTareas.API.Models
         public DateTime? EndDate { get; set; }
         [ForeignKey("TaskPriorities")]
         [Column("id_TskPr_Tsk")]
-        public int ProjectId { get; set; }
+        public int PrioritiesId { get; set; }
         [ForeignKey("TaskTypes")]
         [Column("id_TskTy_Tsk")]
         public int TypeId { get; set; }

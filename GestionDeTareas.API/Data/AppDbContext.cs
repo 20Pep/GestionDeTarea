@@ -10,7 +10,7 @@ namespace GestionDeTareas.API.Data
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
-        public DbSet<Tasks> Tasks { get; set; }  // Referencia correcta a la clase Tasks
+        public DbSet<Tasks> Tasks { get; set; } 
         public DbSet<TaskPriorities> TaskPriorities { get; set; }
         public DbSet<TaskTypes> TaskTypes { get; set; }
         public DbSet<Models.TaskStatus> TaskStatus { get; set; }
