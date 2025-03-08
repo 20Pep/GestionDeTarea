@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace GestionDeTareas.API.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class FirstMig : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -17,81 +17,82 @@ namespace GestionDeTareas.API.Migrations
                 name: "TaskPriorities",
                 columns: table => new
                 {
-                    id_tskPr = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    name_tskPr = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TaskPriorities", x => x.id_tskPr);
+                    table.PrimaryKey("PK_TaskPriorities", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
                 name: "TaskStatus",
                 columns: table => new
                 {
-                    id_tskSt = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    name_tskSt = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TaskStatus", x => x.id_tskSt);
+                    table.PrimaryKey("PK_TaskStatus", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
                 name: "TaskTypes",
                 columns: table => new
                 {
-                    id_tskTy = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    name_tskTy = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TaskTypes", x => x.id_tskTy);
+                    table.PrimaryKey("PK_TaskTypes", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Tasks",
                 columns: table => new
                 {
-                    id_Tsk = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    name_Tsk = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    description_Tsk = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    startDate_Tsk = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    endDate_Tsk = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    id_TskPr_Tsk = table.Column<int>(type: "int", nullable: false),
-                    id_TskTy_Tsk = table.Column<int>(type: "int", nullable: false),
-                    id_TskSt_Tsk = table.Column<int>(type: "int", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    PrioritiesId = table.Column<int>(type: "int", nullable: false),
+                    TypeId = table.Column<int>(type: "int", nullable: false),
+                    StatusId = table.Column<int>(type: "int", nullable: false),
+                    typesId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Tasks", x => x.id_Tsk);
+                    table.PrimaryKey("PK_Tasks", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Tasks_TaskPriorities_id_TskPr_Tsk",
-                        column: x => x.id_TskPr_Tsk,
+                        name: "FK_Tasks_TaskPriorities_PrioritiesId",
+                        column: x => x.PrioritiesId,
                         principalTable: "TaskPriorities",
-                        principalColumn: "id_tskPr",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Tasks_TaskStatus_id_TskSt_Tsk",
-                        column: x => x.id_TskSt_Tsk,
+                        name: "FK_Tasks_TaskStatus_StatusId",
+                        column: x => x.StatusId,
                         principalTable: "TaskStatus",
-                        principalColumn: "id_tskSt",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Tasks_TaskTypes_id_TskTy_Tsk",
-                        column: x => x.id_TskTy_Tsk,
+                        name: "FK_Tasks_TaskTypes_typesId",
+                        column: x => x.typesId,
                         principalTable: "TaskTypes",
-                        principalColumn: "id_tskTy",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.InsertData(
                 table: "TaskPriorities",
-                columns: new[] { "id_tskPr", "name_tskPr" },
+                columns: new[] { "Id", "Name" },
                 values: new object[,]
                 {
                     { 1, "Baja" },
@@ -101,7 +102,7 @@ namespace GestionDeTareas.API.Migrations
 
             migrationBuilder.InsertData(
                 table: "TaskStatus",
-                columns: new[] { "id_tskSt", "name_tskSt" },
+                columns: new[] { "Id", "Name" },
                 values: new object[,]
                 {
                     { 1, "Pendiente" },
@@ -111,7 +112,7 @@ namespace GestionDeTareas.API.Migrations
 
             migrationBuilder.InsertData(
                 table: "TaskTypes",
-                columns: new[] { "id_tskTy", "name_tskTy" },
+                columns: new[] { "Id", "Name" },
                 values: new object[,]
                 {
                     { 1, "Trabajo" },
@@ -120,19 +121,19 @@ namespace GestionDeTareas.API.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Tasks_id_TskPr_Tsk",
+                name: "IX_Tasks_PrioritiesId",
                 table: "Tasks",
-                column: "id_TskPr_Tsk");
+                column: "PrioritiesId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Tasks_id_TskSt_Tsk",
+                name: "IX_Tasks_StatusId",
                 table: "Tasks",
-                column: "id_TskSt_Tsk");
+                column: "StatusId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Tasks_id_TskTy_Tsk",
+                name: "IX_Tasks_typesId",
                 table: "Tasks",
-                column: "id_TskTy_Tsk");
+                column: "typesId");
         }
 
         /// <inheritdoc />

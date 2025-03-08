@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GestionDeTareas.API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250222073810_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20250227205902_FirstMig")]
+    partial class FirstMig
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -29,15 +29,13 @@ namespace GestionDeTareas.API.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("id_tskPr");
+                        .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("name_tskPr");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -65,15 +63,13 @@ namespace GestionDeTareas.API.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("id_tskSt");
+                        .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("name_tskSt");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -101,15 +97,13 @@ namespace GestionDeTareas.API.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("id_tskTy");
+                        .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("name_tskTy");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -137,92 +131,71 @@ namespace GestionDeTareas.API.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("id_Tsk");
+                        .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("description_Tsk");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("EndDate")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("endDate_Tsk");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("name_Tsk");
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ProjectId")
-                        .HasColumnType("int")
-                        .HasColumnName("id_TskPr_Tsk");
+                    b.Property<int>("PrioritiesId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("StartDate")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("startDate_Tsk");
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("StatusId")
-                        .HasColumnType("int")
-                        .HasColumnName("id_TskSt_Tsk");
+                        .HasColumnType("int");
 
                     b.Property<int>("TypeId")
-                        .HasColumnType("int")
-                        .HasColumnName("id_TskTy_Tsk");
+                        .HasColumnType("int");
+
+                    b.Property<int>("typesId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProjectId");
+                    b.HasIndex("PrioritiesId");
 
                     b.HasIndex("StatusId");
 
-                    b.HasIndex("TypeId");
+                    b.HasIndex("typesId");
 
                     b.ToTable("Tasks");
                 });
 
             modelBuilder.Entity("GestionDeTareas.API.Models.Tasks", b =>
                 {
-                    b.HasOne("GestionDeTareas.API.Models.TaskPriorities", "TaskPriorities")
-                        .WithMany("Tasks")
-                        .HasForeignKey("ProjectId")
+                    b.HasOne("GestionDeTareas.API.Models.TaskPriorities", "priorities")
+                        .WithMany()
+                        .HasForeignKey("PrioritiesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("GestionDeTareas.API.Models.TaskStatus", "TaskStatus")
-                        .WithMany("Tasks")
+                    b.HasOne("GestionDeTareas.API.Models.TaskStatus", "status")
+                        .WithMany()
                         .HasForeignKey("StatusId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("GestionDeTareas.API.Models.TaskTypes", "TaskTypes")
-                        .WithMany("Tasks")
-                        .HasForeignKey("TypeId")
+                    b.HasOne("GestionDeTareas.API.Models.TaskTypes", "types")
+                        .WithMany()
+                        .HasForeignKey("typesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("TaskPriorities");
+                    b.Navigation("priorities");
 
-                    b.Navigation("TaskStatus");
+                    b.Navigation("status");
 
-                    b.Navigation("TaskTypes");
-                });
-
-            modelBuilder.Entity("GestionDeTareas.API.Models.TaskPriorities", b =>
-                {
-                    b.Navigation("Tasks");
-                });
-
-            modelBuilder.Entity("GestionDeTareas.API.Models.TaskStatus", b =>
-                {
-                    b.Navigation("Tasks");
-                });
-
-            modelBuilder.Entity("GestionDeTareas.API.Models.TaskTypes", b =>
-                {
-                    b.Navigation("Tasks");
+                    b.Navigation("types");
                 });
 #pragma warning restore 612, 618
         }

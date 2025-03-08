@@ -1,70 +1,43 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using GestionDeTareas.API.Services;
 using GestionDeTareas.API.Models;
 using Microsoft.AspNetCore.Mvc;
+using AutoMapper;
+using GestionDeTareas.API.Models.DTOs.Tasks;
+using GestionDeTareas.API.Data;
 
 namespace GestionDeTareas.API.Controllers
 {
     [ApiController]
     [Route("api/tasks")]
-    public class TaskController : ControllerBase
-    {
-        private readonly TasksService _tasksService;
-        public TaskController(TasksService taskservice)
+    public class TaskController : ControllerBase {
+
+        public readonly AppDbContext _context;
+
+        public TaskController(AppDbContext context)
         {
-            _tasksService = taskservice;
+            _context = context;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Tasks>>> GetTasks()
+        public IActionResult GetAll()
         {
-            var tasks = await _tasksService.GetTasksAsync();
+            var tasks = _context.Tasks.ToList();
+            
             return Ok(tasks);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Tasks>> GetTask(int id)
+        public IActionResult GetById(int id)
         {
-            var task = await _tasksService.GetTaskByIdAsync(id);
+            var task = _context.Tasks.Find(id);
+
             if (task == null)
+            {
                 return NotFound();
+            }
 
             return Ok(task);
         }
-
-
-        [HttpPost]
-        public async Task<ActionResult<Tasks>> CreateTask(Tasks task)
-        {
-            var newTask = await _tasksService.CreateTaskAsync(task);
-            return CreatedAtAction(nameof(GetTask), new { id = newTask.Id }, newTask);
-        }
-
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateTask(int id, Tasks task)
-        {
-            if (id != task.Id)
-                return BadRequest();
-
-            var updated = await _tasksService.UpdateTaskAsync(task);
-            if (!updated)
-                return NotFound();
-
-            return NoContent();
-        }
-
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteTask(int id)
-        {
-            var deleted = await _tasksService.DeleteTaskAsync(id);
-            if (!deleted)
-                return NotFound();
-
-            return NoContent();
-        }
-
-
-
     }
 }

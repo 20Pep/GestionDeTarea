@@ -1,12 +1,10 @@
 using GestionDeTareas.API.Data;
-using GestionDeTareas.API.Services;
+using GestionDeTareas.API.Controllers;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddScoped<TasksService>();
-builder.Services.AddScoped<IGeneralService, GeneralService>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -18,6 +16,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+
+builder.Services.AddAutoMapper(typeof(Program));
 
 var app = builder.Build();
 

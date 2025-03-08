@@ -10,12 +10,8 @@ namespace GestionDeTareas.API.Models
 {
     public class TaskPriorities
     {
-        [Key]
-        [Column("id_tskPr")]
         public int Id {  get; set; }
-        [Required]
-        [Column("name_tskPr")]
-        public string Name { get; set; }
-        public virtual ICollection<Tasks> Tasks { get; set; } = new List<Tasks>();
+        public string Name { get; set; } = null!;
+        public HashSet<Tasks> tasks = new HashSet<Tasks>();
     }
 }
